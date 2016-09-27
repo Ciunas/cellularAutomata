@@ -1,0 +1,295 @@
+    /* (   (
+   (    )\ ))
+   )\  (()/(   (             )
+ (((_)  /(_)) ))\   (     ( /(  (
+ )\___ (_))  /((_)  )\ )  )(_)) )\
+((/ __||_ _|(_))(  _(_/( ((_)_ ((_)
+ | (__  | | | || || ' \))/ _` |(_-<
+  \___||___| \_,_||_||_| \__,_|/__/ 05/02/2015*/
+
+#include <iostream>
+#include <stdlib.h>
+#include "Cellular_Header"
+
+using namespace std;
+//Main Cellular Automatar loop function
+int proceed()
+{
+    int i;
+    char disChar1;
+    char disChar2;
+    unsigned int decVal = 0;
+    const int RULES = 8;
+    const int SIZE = 82;
+    const int ITTERERATIONS = 33;
+    int *conditions = (int*) malloc (RULES* sizeof(int));
+    int *currentState = (int*) malloc (SIZE* sizeof(int));
+    int *nextState = (int*) malloc (SIZE* sizeof(int));
+
+    if(currentState == NULL)
+    {
+        cout<<"Out of memory";
+        exit(1);
+    }
+
+    cout<<"\tPress 1 to  start Cellular Automata or another number to exit: ";
+    cin>>conditions[0];
+
+    if(conditions[0] == 1)
+    {
+        cout<<"\t\tPress 1 to enter a RUlE or 2 to create a RULE: ";
+        cin>>conditions[0];
+        cout<<"\t\t\tChoose your 2 display Characters"<<endl;
+        cout<< "\t\t\t\tCharacter 1: ";
+        cin>>disChar1;
+        cout<<"\t\t\t\tCharacter 2: ";
+        cin>>disChar2;
+
+        while(conditions[0] == 1)
+        {
+            initialiseArray(currentState, nextState, SIZE);
+            cout<<"\t\t\tChoose your rule from 0 to 255: ";
+            cin>>decVal;
+            decimal2Binary(conditions, decVal, RULES);
+            cout<<"\t\t\t\tRule Number: "<<decVal<<endl;
+            printDesign(currentState, SIZE , disChar1, disChar2);
+
+            for(i=0; i<ITTERERATIONS; i++)                                             //Function calls
+            {
+                updateArray(currentState, nextState, conditions, SIZE);
+                copyArray(currentState, nextState, SIZE);
+                printDesign(currentState, SIZE, disChar1, disChar2);
+            }
+            cout<<endl<<"\t\tPress 1 to re-enter RULE or any other number to exit:";
+            cin>>conditions[0];
+
+            if(conditions[0] != 1)
+            {
+                cout<<"\t\t\t\tExiting";
+                return 0;
+            }
+        }
+
+        while(conditions[0] == 2)
+        {
+            initialiseArray(currentState, nextState, SIZE);
+            cout<<"\t\t\tEnter your 8 conditions MSB first"<<endl;
+
+            for(i=0; i<RULES; i++)                                                     //Scan in conditions
+            {
+                cout<<"\t\t\t\tCondition"<<i+1;
+                cout <<": ";
+                cin>>conditions[i];
+
+                if(conditions[i] != 1  &&  conditions[i] != 0)
+                {
+                    cout<<"\t\t\tUnreconised condition re-type"<<endl;
+                    i--;
+                }
+            }
+            cout<<"\t\t\tYour Rules are: ";
+
+            for(i=0; i<RULES; i++)
+            {
+                cout<<conditions[i];
+            }
+            cout<<endl;
+            printDesign(currentState, SIZE, disChar1, disChar2);
+
+            for(i=0; i<ITTERERATIONS; i++)                                             //Function calls
+            {
+                updateArray(currentState, nextState, conditions, SIZE);
+                copyArray(currentState, nextState, SIZE);
+                printDesign(currentState, SIZE, disChar1, disChar2);
+            }
+
+            cout<<endl<<"\tPress 2 to re-enter conditions or any other number to exit:";
+            cin>>conditions[0];
+
+            if(conditions[0] != 2)
+            {
+                cout<<"\t\t\t\tExiting";
+                return 0;
+            }
+        }
+    }
+
+    else if(conditions[0] != 1 && conditions[0] == 2)
+    {
+        cout<<"\t\t\t\tExiting:"<<endl;
+    }
+
+    else
+    {
+        cout<<"\t\t\tUnrecognised Entry Exiting"<<endl;
+    }
+
+    free(currentState);
+    free(nextState);
+    free(conditions);
+
+    return 0;
+}
+
+//Function  to print array currentState
+void printDesign(int *currentState, int SIZE, char disChar1, char disChar2)
+{
+    int i;
+
+    for(i=0; i<SIZE; i++)
+    {
+        if(currentState[i] == 1)
+            cout <<disChar1;
+        else
+            cout<<disChar2;
+    }
+
+    cout<<endl;
+}
+
+//Function to alter value of nextState depending on condition
+void updateArray(int *currentstate, int *nextState, int *conditions, int SIZE)
+{
+    int i = 0;
+    int j;
+    j = SIZE-1;
+
+    if(currentstate[j] == 1 && currentstate[i] == 1 && currentstate[i+1] == 1)
+        {
+            nextState[i] = conditions[0];
+        }
+    else if(currentstate[j] == 1 && currentstate[i] == 1 && currentstate[i+1] == 0)
+        {
+            nextState[i] = conditions[1];
+        }
+    else if(currentstate[j] == 1 && currentstate[i] == 0 && currentstate[i+1] == 1)
+        {
+            nextState[i] = conditions[2];
+        }
+    else if(currentstate[j] == 1 && currentstate[i] == 0 && currentstate[i+1] == 0)
+        {
+            nextState[i] = conditions[3];
+        }
+    else if(currentstate[j] == 0 && currentstate[i] == 1 && currentstate[i+1] == 1)
+        {
+            nextState[i] = conditions[4];
+        }
+    else if(currentstate[j] == 0 && currentstate[i] == 1 && currentstate[i+1] == 0)
+        {
+            nextState[i] = conditions[5];
+        }
+    else if(currentstate[j] == 0 && currentstate[i] == 0 && currentstate[i+1] == 1)
+        {
+            nextState[i] = conditions[6];
+        }
+    else if(currentstate[j] == 0 && currentstate[i] == 0 && currentstate[i+1] == 0)
+        {
+            nextState[i] = conditions[7];
+        }
+
+    if(currentstate[j-1] == 1 && currentstate[j] == 1 && currentstate[i] == 1)
+            {
+                nextState[i] = conditions[0];
+            }
+    else if(currentstate[j-1] == 1 && currentstate[j] == 1 && currentstate[i] == 0)
+        {
+            nextState[j] = conditions[1];
+        }
+    else if(currentstate[j-1] == 1 && currentstate[j] == 0 && currentstate[i] == 1)
+        {
+            nextState[j] = conditions[2];
+        }
+    else if(currentstate[j-1] == 1 && currentstate[j] == 0 && currentstate[i] == 0)
+        {
+            nextState[j] = conditions[3];
+        }
+    else if(currentstate[j-1] == 0 && currentstate[j] == 1 && currentstate[i] == 1)
+        {
+            nextState[j] = conditions[4];
+        }
+    else if(currentstate[j-1] == 0 && currentstate[j] == 1 && currentstate[i] == 0)
+        {
+            nextState[j] = conditions[5];
+        }
+    else if(currentstate[j-1] == 0 && currentstate[j] == 0 && currentstate[i] == 1)
+        {
+            nextState[j] = conditions[6];
+        }
+    else if(currentstate[j-1] == 0 && currentstate[j] == 0 && currentstate[i] == 0)
+        {
+            nextState[j] = conditions[7];
+        }
+
+    for(i=1; i<SIZE-1; i++)
+    {
+        if(currentstate[i-1] == 1 && currentstate[i] == 1 && currentstate[i+1] == 1)
+            {
+                nextState[i] = conditions[0];
+            }
+        else if(currentstate[i-1] == 1 && currentstate[i] == 1 && currentstate[i+1] == 0)
+            {
+                nextState[i] = conditions[1];
+            }
+        else if(currentstate[i-1] == 1 && currentstate[i] == 0 && currentstate[i+1] == 1)
+            {
+                nextState[i] = conditions[2];
+            }
+        else if(currentstate[i-1] == 1 && currentstate[i] == 0 && currentstate[i+1] == 0)
+            {
+                nextState[i] = conditions[3];
+            }
+        else if(currentstate[i-1] == 0 && currentstate[i] == 1 && currentstate[i+1] == 1)
+            {
+                nextState[i] = conditions[4];
+            }
+        else if(currentstate[i-1] == 0 && currentstate[i] == 1 && currentstate[i+1] == 0)
+            {
+                nextState[i] = conditions[5];
+            }
+        else if(currentstate[i-1] == 0 && currentstate[i] == 0 && currentstate[i+1] == 1)
+            {
+                nextState[i] = conditions[6];
+            }
+        else if(currentstate[i-1] == 0 && currentstate[i] == 0 && currentstate[i+1] == 0)
+            {
+                nextState[i] = conditions[7];
+            }
+    }
+}
+
+//Function to copy nextState into currentState
+void copyArray(int *currentSate, int *nextState, int SIZE)
+{
+    int i;
+
+    for(i=0; i<SIZE; i++)
+    {
+        currentSate[i] = nextState[i];
+    }
+}
+
+//Initialise both  Arrays currentState & nextState to 0
+void initialiseArray(int *currentState, int *nextState, int SIZE)
+{
+    int i,j;
+
+    for(i=0; i<SIZE; i++)
+    {
+        currentState[i] = 0;
+        nextState[i] = 0;
+    }
+    j = int (SIZE/2);
+    currentState[j] = 1;
+}
+
+//Function to convert Decimal to Binary
+void decimal2Binary(int *conditions ,int decVal, int RULES)
+{
+    int i;
+
+    for(i=RULES-1; i>=0; i--)
+    {
+        conditions[i] = decVal%2;
+        decVal = decVal/2;
+    }
+}

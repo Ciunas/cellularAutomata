@@ -1,0 +1,43 @@
+# depslib dependency file v1.0
+1424713603 source:/home/ciunas/C_Programming_YR_3/YEAR_3_PROG Semester 6/Cellular_Aotomator/Cellular_Automator/Cellular_Automata.cpp
+	<iostream>
+	<stdlib.h>
+	"Cellular_Header"
+
+1424713196 /home/ciunas/C_Programming_YR_3/YEAR_3_PROG Semester 6/Cellular_Aotomator/Cellular_Automator/Cellular_Header
+
+1424952137 source:c:\users\leucr_000\desktop\codeblocks_normal\compress\cellular_automata.cpp
+	<iostream>
+	<stdlib.h>
+	<conio.h>
+	<windows.h>
+	"Cellular_Header"
+
+1424718008 c:\users\leucr_000\desktop\codeblocks_normal\compress\cellular_header
+
+1424984922 source:c:\users\leucr_000\desktop\codeblocks_normal\c++\cellular_automata.cpp
+	"Cellular_Header.h"
+
+1424718008 c:\users\leucr_000\desktop\codeblocks_normal\c++\cellular_header
+
+1424984097 c:\users\leucr_000\desktop\codeblocks_normal\c++\cellular_header.h
+
+1424986484 source:c:\users\leucr_000\desktop\codeblocks_normal\c++\cell_it.cpp
+	<iostream>
+	<stdlib.h>
+	<conio.h>
+	<windows.h>
+	"Cellular_Header.h"
+
+1425031724 source:c:\users\leucr_000\desktop\codeblocks_normal\c++cellular\cell_it.cpp
+	<iostream>
+	<stdlib.h>
+	<conio.h>
+	<windows.h>
+	"Cellular_Header.h"
+
+1425030805 c:\users\leucr_000\desktop\codeblocks_normal\c++cellular\cellular_header.h
+
+1424984922 source:c:\users\leucr_000\desktop\codeblocks_normal\c++cellular\cellular_automata.cpp
+	"Cellular_Header.h"
+
